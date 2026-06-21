@@ -1,0 +1,212 @@
+port: 0
+socks-port: 0
+redir-port: 0
+tproxy-port: 0
+mixed-port: 7890
+ss-config: ""
+vmess-config: ""
+inbound-tfo: false
+inbound-mptcp: false
+authentication: []
+skip-auth-prefixes: null
+lan-allowed-ips:
+  - "0.0.0.0/0"
+  - "::/0"
+lan-disallowed-ips: null
+allow-lan: false
+bind-address: "*"
+mode: "rule"
+unified-delay: true
+log-level: "info"
+ipv6: false
+external-controller: ""
+external-controller-pipe: ""
+external-controller-unix: ""
+external-controller-tls: ""
+external-controller-cors:
+  allow-origins:
+    - "*"
+  allow-private-network: true
+external-ui: ""
+external-ui-url: ""
+external-ui-name: ""
+external-doh-server: ""
+secret: ""
+interface-name: ""
+routing-mark: 0
+tunnels: null
+geo-auto-update: false
+geo-update-interval: 24
+geodata-mode: false
+geodata-loader: "memconservative"
+geosite-matcher: ""
+tcp-concurrent: true
+find-process-mode: "always"
+global-client-fingerprint: ""
+global-ua: "FlClash/v0.8.92 clash-verge Platform/windows"
+etag-support: true
+keep-alive-idle: 0
+keep-alive-interval: 30
+disable-keep-alive: false
+proxy-providers: null
+rule-providers: null
+
+proxies:
+  - name: "ServerB"
+    password: "输入密码"
+    port: 10022
+    server: "103.45.129.251"
+    type: "socks5"
+    username: "输入账号"
+
+proxy-groups:
+  - name: "GameProxy"
+    type: select
+    proxies:
+      - ServerB
+      - DIRECT
+  - name: "Direct"
+    type: select
+    proxies:
+      - DIRECT
+  - name: "Reject"
+    type: select
+    proxies:
+      - REJECT
+
+listeners: null
+hosts: {}
+
+dns:
+  enable: true
+  listen: "0.0.0.0:1053"
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: true
+  ipv6: false
+  default-nameserver:
+    - "223.5.5.5"
+  enhanced-mode: "fake-ip"
+  fake-ip-range: "198.18.0.1/16"
+  fake-ip-filter:
+    - "*.lan"
+    - "localhost.ptlogin2.qq.com"
+    - "+.local"
+  nameserver-policy:
+    www.baidu.com: "114.114.114.114"
+    +.internal.crop.com: "10.0.0.1"
+    geosite:cn: "https://doh.pub/dns-query"
+  nameserver:
+    - "https://doh.pub/dns-query"
+    - "https://dns.alidns.com/dns-query"
+    - "system://"
+  fallback:
+    - "tls://8.8.4.4"
+    - "tls://1.1.1.1"
+  proxy-server-nameserver:
+    - "https://doh.pub/dns-query"
+  fallback-filter:
+    geoip: true
+    geoip-code: "CN"
+    geosite:
+      - "gfw"
+    ipcidr:
+      - "240.0.0.0/4"
+    domain:
+      - "+.google.com"
+      - "+.facebook.com"
+      - "+.youtube.com"
+
+ntp:
+  enable: false
+  server: "time.apple.com"
+  port: 123
+  interval: 30
+  dialer-proxy: ""
+  write-to-system: false
+
+tun:
+  enable: true
+  device: "FlClash"
+  stack: "mixed"
+  dns-hijack:
+    - "any:53"
+  auto-route: true
+  AutoDetectInterface: true
+  inet6-address:
+    - "fdfe:dcba:9876::1/126"
+  file-descriptor: 0
+  recvmsgx: true
+  route-address: []
+
+tuic-server:
+  enable: false
+  listen: ""
+  token: null
+  certificate: ""
+  private-key: ""
+  max-idle-time: 15000
+  authentication-timeout: 1000
+  alpn:
+    - "h3"
+  max-udp-relay-packet-size: 1500
+
+iptables:
+  enable: false
+  inbound-interface: "lo"
+  bypass: []
+  dns-redirect: true
+
+experimental:
+  Fingerprints: null
+  QUICGoDisableGSO: false
+  QUICGoDisableECN: true
+  IP4PEnable: false
+
+profile:
+  store-selected: false
+  store-fake-ip: false
+
+geox-url:
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+
+sniffer:
+  enable: false
+  override-destination: true
+  sniffing: null
+  force-domain: []
+  skip-src-address: null
+  skip-dst-address: null
+  skip-domain: []
+  port-whitelist: []
+  force-dns-mapping: true
+  parse-pure-ip: true
+  sniff: {}
+
+tls:
+  certificate: ""
+  private-key: ""
+  client-auth-type: ""
+  client-auth-cert: ""
+  ech-key: ""
+  custom-certifactes: null
+
+clash-for-android:
+  append-system-dns: false
+  ui-subtitle-pattern: ""
+
+# 完整规则（新增5223端口阻断）
+rules:
+  - DOMAIN,cschannel2.anticheatexpert.com,ServerB
+  - DOMAIN,www.7k7k.com,ServerB
+  - DST-PORT,5223,REJECT
+  - AND,((DOMAIN,cschannel2.anticheatexpert),(DST-PORT,80)),REJECT
+  - AND,((DOMAIN,cschannel2.anticheatexpert),(DST-PORT,443)),REJECT
+  - AND,((DOMAIN,cschannel.anticheatexpert),(DST-PORT,80)),REJECT
+  - AND,((DOMAIN,cschannel.anticheatexpert),(DST-PORT,443)),REJECT
+# 兜底规则
+  - "MATCH,Direct" 
